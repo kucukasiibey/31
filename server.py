@@ -4,7 +4,7 @@ from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from PyCharacterAI import get_client
 
-app = Flask(__name__, static_folder="static", static_url_path="/static")
+app = Flask(__name__, static_folder=".", static_url_path="")
 CORS(app)
 
 token = "ad40c52f78abc4a1a510efa2bd827e47e3af4d42"
@@ -26,15 +26,7 @@ async def init_client():
 
 @app.route("/")
 def home():
-    try:
-        files = os.listdir(app.static_folder)
-    except Exception as e:
-        files = [f"HATA: {e}"]
-    return jsonify({
-        "static_folder": app.static_folder,
-        "calisma_dizini": os.getcwd(),
-        "static_icerik": files
-    })
+    return send_from_directory(".", "index.html")
 
 
 @app.route("/mesaj", methods=["POST"])
